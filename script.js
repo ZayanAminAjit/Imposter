@@ -4,7 +4,7 @@ if ('serviceWorker' in navigator) {
 }
 
 const defaultWordBank = {
-    "regular": [
+    "Regular": [
         {w: "Library", h: "Silence"}, {w: "Subway", h: "Underground"}, {w: "Umbrella", h: "Rain"},
         {w: "Backpack", h: "Straps"}, {w: "Mirror", h: "Reflection"}, {w: "Keyboard", h: "Input"},
         {w: "Telescope", h: "Stars"}, {w: "Wallet", h: "Leather"}, {w: "Bicycle", h: "Pedals"},
@@ -16,7 +16,7 @@ const defaultWordBank = {
         {w: "Airport", h: "Runway"}, {w: "Hospital", h: "Doctor"}, {w: "Gym", h: "Weights"},
         {w: "Museum", h: "Artifacts"}, {w: "Postcard", h: "Stamp"}, {w: "Map", h: "Legend"}
     ],
-    "food": [
+    "Food": [
         {w: "Pizza", h: "Dough"}, {w: "Sushi", h: "Vinegar"}, {w: "Taco", h: "Shell"},
         {w: "Burger", h: "Grill"}, {w: "Pasta", h: "Boil"}, {w: "Steak", h: "Medium"},
         {w: "Ramen", h: "Broth"}, {w: "Salad", h: "Dressing"}, {w: "Omelette", h: "Whisk"},
@@ -28,7 +28,7 @@ const defaultWordBank = {
         {w: "Smoothie", h: "Blender"}, {w: "Coffee", h: "Roast"}, {w: "Tea", h: "Steep"},
         {w: "Wine", h: "Vineyard"}, {w: "Beer", h: "Hops"}, {w: "Champagne", h: "Bubbles"}
     ],
-    "celebrities": [
+    "Celebrities": [
         {w: "Taylor Swift", h: "Eras"}, {w: "Tom Cruise", h: "Stunts"}, {w: "The Rock", h: "Muscle"},
         {w: "Beyonce", h: "Queen"}, {w: "Elon Musk", h: "Mars"}, {w: "Lionel Messi", h: "Pitch"},
         {w: "Cristiano Ronaldo", h: "Goal"}, {w: "LeBron James", h: "Dunk"}, {w: "Brad Pitt", h: "Hollywood"},
@@ -40,7 +40,7 @@ const defaultWordBank = {
         {w: "Eminem", h: "Rap"}, {w: "Jay-Z", h: "Empire"}, {w: "Kanye West", h: "Yeezy"},
         {w: "Zendaya", h: "Spider"}, {w: "Tom Holland", h: "Web"}, {w: "Scarlett Johansson", h: "Widow"}
     ],
-    "videogames": [
+    "VideoGames": [
         {w: "Minecraft", h: "Blocks"}, {w: "Fortnite", h: "Building"}, {w: "Roblox", h: "Platform"},
         {w: "Call of Duty", h: "Soldier"}, {w: "Grand Theft Auto", h: "Stealing"}, {w: "Zelda", h: "Triforce"},
         {w: "Mario Kart", h: "Shells"}, {w: "Pac-Man", h: "Ghosts"}, {w: "Tetris", h: "Shapes"},
@@ -52,7 +52,7 @@ const defaultWordBank = {
         {w: "Cyberpunk 2077", h: "Neon"}, {w: "Resident Evil", h: "Horror"}, {w: "Final Fantasy", h: "Crystal"},
         {w: "Street Fighter", h: "Combo"}, {w: "Mortal Kombat", h: "Fatality"}, {w: "Doom", h: "Mars"}
     ],
-    "movies": [
+    "Movies": [
         {w: "Inception", h: "Dreams"}, {w: "Titanic", h: "Iceberg"}, {w: "Star Wars", h: "Galaxy"},
         {w: "Harry Potter", h: "Wand"}, {w: "The Avengers", h: "Heroes"}, {w: "Joker", h: "Laugh"},
         {w: "Parasite", h: "Basement"}, {w: "Interstellar", h: "Blackhole"}, {w: "The Godfather", h: "Mafia"},
@@ -434,3 +434,4 @@ function endGame(title, desc, iconClass, color) {
     showScreen('screen-result');
 
 }
+
