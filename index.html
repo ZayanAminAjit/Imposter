@@ -99,14 +99,27 @@
         <div id="screen-reveal" class="screen">
             <i class="fa-solid fa-user-secret fa-3x screen-icon"></i>
             <h2>Secret Role</h2>
+            
             <div class="role-card">
-                <div class="role-title" id="reveal-role"></div>
-                <div class="role-word" id="reveal-word"></div>
-                <p id="reveal-desc" class="role-desc"></p>
+                <div id="reveal-content" class="hidden-blur">
+                    <div class="role-title" id="reveal-role"></div>
+                    <div class="role-word" id="reveal-word"></div>
+                    <p id="reveal-desc" class="role-desc"></p>
+                </div>
+                <div id="reveal-placeholder">
+                    <i class="fa-solid fa-lock fa-3x" style="opacity: 0.3;"></i>
+                    <p>Tap "Show" to reveal your secret</p>
+                </div>
             </div>
-            <button class="btn-primary full-width large-btn" onclick="hideRole()">
-                <i class="fa-solid fa-eye-slash"></i> Got it! Hide
-            </button>
+        
+            <div class="grid-btns">
+                <button id="btn-toggle-reveal" class="btn-outline full-width" onclick="toggleWordVisibility()">
+                    <i class="fa-solid fa-eye"></i> Show Word
+                </button>
+                <button id="btn-next-player" class="btn-primary full-width hidden" onclick="hideRole()">
+                    Next Player <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
         </div>
 
         <div id="screen-timer" class="screen">
@@ -157,4 +170,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
