@@ -29,16 +29,14 @@
 }
 
 .hidden-blur {
-    filter: blur(15px);
+    filter: blur(20px);
     opacity: 0;
-    pointer-events: none;
     transition: all 0.3s ease;
 }
 
 .visible-clear {
     filter: blur(0);
     opacity: 1;
-    pointer-events: auto;
 }
 
 #reveal-placeholder {
@@ -133,3 +131,4 @@ input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent);
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
