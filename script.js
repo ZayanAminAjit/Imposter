@@ -134,20 +134,26 @@ function hideModal() { document.getElementById('custom-modal').classList.add('hi
 // --- UI Navigation ---
 function showScreen(screenId, addToHistory = true) {
     const currentScreen = document.querySelector('.screen.active');
-    if (currentScreen && addToHistory) screenHistory.push(currentScreen.id);
+    
+    // Only add to history if we're moving forward to a DIFFERENT screen
+    if (currentScreen && addToHistory && currentScreen.id !== screenId) {
+        screenHistory.push(currentScreen.id);
+    }
     
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
 
-    // Update Nav Buttons
     const backBtn = document.getElementById('nav-back');
     const restartBtn = document.getElementById('nav-restart');
     
-    // Only allow going back between names and settings, or to prevent breaking game state
-    if (screenId === 'screen-settings') backBtn.classList.remove('hidden');
-    else backBtn.classList.add('hidden');
+    // FIX: Show back button if there is any history to go back to, 
+    // unless we are on the first screen or the final result screen.
+    if (screenHistory.length > 0 && screenId !== 'screen-names' && screenId !== 'screen-result') {
+        backBtn.classList.remove('hidden');
+    } else {
+        backBtn.classList.add('hidden');
+    }
 
-    // Show restart button once gameplay starts (after settings)
     if (['screen-pass', 'screen-reveal', 'screen-timer', 'screen-vote'].includes(screenId)) {
         restartBtn.classList.remove('hidden');
     } else {
@@ -158,7 +164,7 @@ function showScreen(screenId, addToHistory = true) {
 function goBack() {
     if (screenHistory.length > 0) {
         const prevScreen = screenHistory.pop();
-        showScreen(prevScreen, false); // Don't add to history when going back
+        showScreen(prevScreen, false); // 'false' prevents an infinite history loop
     }
 }
 
@@ -209,12 +215,20 @@ function goToSettings() {
 // --- Setup & Game Logic ---
 function startGame() {
     let activeWords = [];
-    document.querySelectorAll('.category-cb:checked').forEach(cb => {
-        if(defaultWordBank[cb.value]) activeWords = activeWords.concat(defaultWordBank[cb.value]);
+    const selectedCheckboxes = document.querySelectorAll('.category-cb:checked');
+    
+    selectedCheckboxes.forEach(cb => {
+        const category = cb.value;
+        if (defaultWordBank[category]) {
+            activeWords = activeWords.concat(defaultWordBank[category]);
+        }
     });
 
-    if (activeWords.length === 0) return showModal("No Categories", "Please select at least one word category!");
-
+    // CRITICAL FIX: If no words are found, the game will now stop and tell you 
+    // instead of showing a blank screen.
+    if (activeWords.length === 0) {
+        return showModal("No Words Found", "Please select at least one valid category.");
+    }
     gameState.targetWord = activeWords[Math.floor(Math.random() * activeWords.length)];
 
     let imposterCount = parseInt(document.getElementById('set-imposters').value);
