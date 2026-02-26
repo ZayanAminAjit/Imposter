@@ -4,32 +4,65 @@ if ('serviceWorker' in navigator) {
 }
 
 const defaultWordBank = {
-    "Regular": [
-        {w: "Apple", h: "Orchard"}, {w: "Banana", h: "Pineapple"}, {w: "Car", h: "Engine"}, {w: "Ship", h: "Voyage"},
-        {w: "Orange", h: "Crown"}, {w: "Chair", h: "Layer"}, {w: "Door", h: "Hinge"}, {w: "Airplane", h: "Runway"},
-        {w: "Bed", h: "Rest"}, {w: "Roof", h: "Shingles"}, {w: "Wall", h: "Barrier"}, {w: "Bicycle", h: "Chain"},
-        {w: "Ocean", h: "Skyline"}, {w: "Train", h: "Route"}, {w: "Sun", h: "Flare"}, {w: "Cloud", h: "Rumble"},
-        {w: "Clock", h: "Ticking"}, {w: "Phone", h: "Screen"}, {w: "Mirror", h: "Reflection"}, {w: "Camera", h: "Lens"}
+    "regular": [
+        {w: "Library", h: "Silence"}, {w: "Subway", h: "Underground"}, {w: "Umbrella", h: "Rain"},
+        {w: "Backpack", h: "Straps"}, {w: "Mirror", h: "Reflection"}, {w: "Keyboard", h: "Input"},
+        {w: "Telescope", h: "Stars"}, {w: "Wallet", h: "Leather"}, {w: "Bicycle", h: "Pedals"},
+        {w: "Clock", h: "Hands"}, {w: "Compass", h: "North"}, {w: "Candle", h: "Wick"},
+        {w: "Hammer", h: "Nail"}, {w: "Ladder", h: "Height"}, {w: "Camera", h: "Lens"},
+        {w: "Blanket", h: "Warmth"}, {w: "Pillow", h: "Feathers"}, {w: "Calendar", h: "Dates"},
+        {w: "Matches", h: "Sulfur"}, {w: "Bridge", h: "River"}, {w: "Mountain", h: "Peak"},
+        {w: "Ocean", h: "Salt"}, {w: "Forest", h: "Trees"}, {w: "Desert", h: "Sand"},
+        {w: "Airport", h: "Runway"}, {w: "Hospital", h: "Doctor"}, {w: "Gym", h: "Weights"},
+        {w: "Museum", h: "Artifacts"}, {w: "Postcard", h: "Stamp"}, {w: "Map", h: "Legend"}
     ],
-    "Food": [
-        {w: "Pizza", h: "Oven"}, {w: "Burger", h: "Stack"}, {w: "Pasta", h: "AlDente"}, {w: "Biryani", h: "Aroma"},
-        {w: "Tacos", h: "Fold"}, {w: "Salad", h: "Tossed"}, {w: "Soup", h: "Tender"}, {w: "Sandwich", h: "Layers"},
-        {w: "Steak", h: "Sear"}, {w: "IceCream", h: "Scoop"}, {w: "Coffee", h: "Brewed"}, {w: "Pancake", h: "Griddle"}
+    "food": [
+        {w: "Pizza", h: "Dough"}, {w: "Sushi", h: "Vinegar"}, {w: "Taco", h: "Shell"},
+        {w: "Burger", h: "Grill"}, {w: "Pasta", h: "Boil"}, {w: "Steak", h: "Medium"},
+        {w: "Ramen", h: "Broth"}, {w: "Salad", h: "Dressing"}, {w: "Omelette", h: "Whisk"},
+        {w: "Pancakes", h: "Syrup"}, {w: "Waffles", h: "Iron"}, {w: "Bagel", h: "Creamy"},
+        {w: "Croissant", h: "Butter"}, {w: "Donut", h: "Glaze"}, {w: "Chocolate", h: "Cocoa"},
+        {w: "Ice Cream", h: "Scoop"}, {w: "Cheesecake", h: "Graham"}, {w: "Popcorn", h: "Kernel"},
+        {w: "Burrito", h: "Tortilla"}, {w: "Dim Sum", h: "Steamer"}, {w: "Curry", h: "Spices"},
+        {w: "Lasagna", h: "Layers"}, {w: "Paella", h: "Saffron"}, {w: "Falafel", h: "Chickpeas"},
+        {w: "Smoothie", h: "Blender"}, {w: "Coffee", h: "Roast"}, {w: "Tea", h: "Steep"},
+        {w: "Wine", h: "Vineyard"}, {w: "Beer", h: "Hops"}, {w: "Champagne", h: "Bubbles"}
     ],
-    "Celebrities": [
-        {w: "Cristiano Ronaldo", h: "Madrid"}, {w: "Lionel Messi", h: "Rosario"}, {w: "LeBron James", h: "Lakers"},
-        {w: "Billie Eilish", h: "Whisper"}, {w: "Drake", h: "Toronto"}, {w: "Elon Musk", h: "Mars"},
-        {w: "MrBeast", h: "Challenges"}, {w: "Tom Holland", h: "Spiderman"}
+    "celebrities": [
+        {w: "Taylor Swift", h: "Eras"}, {w: "Tom Cruise", h: "Stunts"}, {w: "The Rock", h: "Muscle"},
+        {w: "Beyonce", h: "Queen"}, {w: "Elon Musk", h: "Mars"}, {w: "Lionel Messi", h: "Pitch"},
+        {w: "Cristiano Ronaldo", h: "Goal"}, {w: "LeBron James", h: "Dunk"}, {w: "Brad Pitt", h: "Hollywood"},
+        {w: "Leonardo DiCaprio", h: "Oscar"}, {w: "Rihanna", h: "Umbrella"}, {w: "Drake", h: "Toronto"},
+        {w: "Ariana Grande", h: "Ponytail"}, {w: "Gordon Ramsay", h: "Kitchen"}, {w: "Will Smith", h: "Fresh"},
+        {w: "Morgan Freeman", h: "Voice"}, {w: "Keanu Reeves", h: "Matrix"}, {w: "Bill Gates", h: "Windows"},
+        {w: "Oprah Winfrey", h: "Talk"}, {w: "Kim Kardashian", h: "Reality"}, {w: "Justin Bieber", h: "Baby"},
+        {w: "Selena Gomez", h: "Rare"}, {w: "Katy Perry", h: "Fireworks"}, {w: "Lady Gaga", h: "Monster"},
+        {w: "Eminem", h: "Rap"}, {w: "Jay-Z", h: "Empire"}, {w: "Kanye West", h: "Yeezy"},
+        {w: "Zendaya", h: "Spider"}, {w: "Tom Holland", h: "Web"}, {w: "Scarlett Johansson", h: "Widow"}
     ],
-    "VideoGames": [
-        {w: "Fortnite", h: "Island"}, {w: "Minecraft", h: "Crafting"}, {w: "Among Us", h: "Vent"},
-        {w: "Call of Duty", h: "Prestige"}, {w: "Skyrim", h: "FusRoDah"}, {w: "Pokemon", h: "Pokeball"},
-        {w: "Super Mario", h: "Goomba"}, {w: "Tetris", h: "Blocks"}
+    "videogames": [
+        {w: "Minecraft", h: "Blocks"}, {w: "Fortnite", h: "Building"}, {w: "Roblox", h: "Platform"},
+        {w: "Call of Duty", h: "Soldier"}, {w: "Grand Theft Auto", h: "Stealing"}, {w: "Zelda", h: "Triforce"},
+        {w: "Mario Kart", h: "Shells"}, {w: "Pac-Man", h: "Ghosts"}, {w: "Tetris", h: "Shapes"},
+        {w: "Among Us", h: "Sus"}, {w: "Valorant", h: "Abilities"}, {w: "League of Legends", h: "Nexus"},
+        {w: "Dota 2", h: "Ancient"}, {w: "Overwatch", h: "Payload"}, {w: "Apex Legends", h: "Squad"},
+        {w: "The Sims", h: "House"}, {w: "Animal Crossing", h: "Island"}, {w: "Pokemon", h: "Catch"},
+        {w: "Sonic", h: "Rings"}, {w: "Halo", h: "Spartan"}, {w: "God of War", h: "Axe"},
+        {w: "The Witcher", h: "Monsters"}, {w: "Skyrim", h: "Dragon"}, {w: "Elden Ring", h: "Tarnished"},
+        {w: "Cyberpunk 2077", h: "Neon"}, {w: "Resident Evil", h: "Horror"}, {w: "Final Fantasy", h: "Crystal"},
+        {w: "Street Fighter", h: "Combo"}, {w: "Mortal Kombat", h: "Fatality"}, {w: "Doom", h: "Mars"}
     ],
-    "Movies": [
-        {w: "Avengers", h: "Assemble"}, {w: "Spider-Man", h: "Webs"}, {w: "Harry Potter", h: "Hogwarts"},
-        {w: "Titanic", h: "Iceberg"}, {w: "Inception", h: "Totem"}, {w: "Jurassic Park", h: "Isla Nublar"},
-        {w: "Matrix", h: "RedPill"}, {w: "Avatar", h: "NaVi"}
+    "movies": [
+        {w: "Inception", h: "Dreams"}, {w: "Titanic", h: "Iceberg"}, {w: "Star Wars", h: "Galaxy"},
+        {w: "Harry Potter", h: "Wand"}, {w: "The Avengers", h: "Heroes"}, {w: "Joker", h: "Laugh"},
+        {w: "Parasite", h: "Basement"}, {w: "Interstellar", h: "Blackhole"}, {w: "The Godfather", h: "Mafia"},
+        {w: "Pulp Fiction", h: "Briefcase"}, {w: "The Dark Knight", h: "Gotham"}, {w: "Jurassic Park", h: "Fossil"},
+        {w: "Toy Story", h: "Plastic"}, {w: "Finding Nemo", h: "Anemone"}, {w: "The Lion King", h: "Savanna"},
+        {w: "Shrek", h: "Swamp"}, {w: "Frozen", h: "Snow"}, {w: "Home Alone", h: "Traps"},
+        {w: "Back to the Future", h: "Time"}, {w: "The Matrix", h: "Simulation"}, {w: "Spider-Man", h: "Multiverse"},
+        {w: "Black Panther", h: "Vibranium"}, {w: "Gladiator", h: "Arena"}, {w: "Braveheart", h: "Freedom"},
+        {w: "Rocky", h: "Boxing"}, {w: "The Terminator", h: "Robot"}, {w: "Alien", h: "Space"},
+        {w: "Jaws", h: "Ocean"}, {w: "The Shining", h: "Hotel"}, {w: "Mad Max", h: "Desert"}
     ]
 };
 
@@ -246,21 +279,60 @@ function prepPassScreen() {
     showScreen('screen-pass');
 }
 
+let hasSeenWord = false; // Track if they clicked unhide
+
 function showRole() {
     let p = gameState.roles[gameState.currentPlayerIdx];
-    const roleElem = document.getElementById('reveal-role');
+    hasSeenWord = false; // Reset for new player
     
+    // Set text data
+    const roleElem = document.getElementById('reveal-role');
     roleElem.innerText = p.role === 'Whiteman' ? 'Mr. Whiteman' : p.role;
     roleElem.style.color = (p.role === 'Innocent') ? "var(--success)" : "var(--danger)";
     
-    if (p.role === 'Innocent' || p.role === 'Jester') {
-        document.getElementById('reveal-word').innerText = p.word;
-        document.getElementById('reveal-desc').innerText = p.role === 'Jester' ? "Try to act suspicious and get voted out!" : "Find the imposter among you.";
-    } else {
-        document.getElementById('reveal-word').innerText = `Hint: ${p.hint}`;
-        document.getElementById('reveal-desc').innerText = p.role === 'Whiteman' ? "You have no hint. Blend in immediately!" : "Figure out the real word and blend in!";
-    }
+    // Handle the word display with the "Space" fix and Case fix
+    let displayWord = p.role === 'Innocent' || p.role === 'Jester' ? p.word : `Hint: ${p.hint}`;
+    // Add spaces between CamelCase words
+    document.getElementById('reveal-word').innerText = displayWord.replace(/([A-Z])/g, ' $1').trim();
+    
+    document.getElementById('reveal-desc').innerText = p.role === 'Jester' ? 
+        "Try to act suspicious and get voted out!" : 
+        (p.role === 'Innocent' ? "Find the imposter among you." : "Blend in and don't get caught!");
+
+    // Ensure UI is in "Hidden" state initially
+    document.getElementById('reveal-content').classList.add('hidden-blur');
+    document.getElementById('reveal-content').classList.remove('visible-clear');
+    document.getElementById('reveal-placeholder').style.display = 'block';
+    
+    document.getElementById('btn-toggle-reveal').innerHTML = '<i class="fa-solid fa-eye"></i> Show Word';
+    document.getElementById('btn-next-player').classList.add('hidden');
+
     showScreen('screen-reveal');
+}
+
+function toggleWordVisibility() {
+    const content = document.getElementById('reveal-content');
+    const placeholder = document.getElementById('reveal-placeholder');
+    const toggleBtn = document.getElementById('btn-toggle-reveal');
+    const nextBtn = document.getElementById('btn-next-player');
+
+    if (content.classList.contains('hidden-blur')) {
+        // UNHIDE
+        content.classList.remove('hidden-blur');
+        content.classList.add('visible-clear');
+        placeholder.style.display = 'none';
+        toggleBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Hide Word';
+        
+        // Mark as seen and show the "Next" button
+        hasSeenWord = true;
+        nextBtn.classList.remove('hidden');
+    } else {
+        // HIDE
+        content.classList.add('hidden-blur');
+        content.classList.remove('visible-clear');
+        placeholder.style.display = 'block';
+        toggleBtn.innerHTML = '<i class="fa-solid fa-eye"></i> Show Word';
+    }
 }
 
 function hideRole() {
@@ -330,10 +402,15 @@ function handleVote(votedName) {
 }
 
 function submitGuess() {
+    // .trim() removes accidental spaces at start/end
+    // .toLowerCase() makes it case-insensitive
     const guess = document.getElementById('imposter-guess-input').value.trim().toLowerCase();
     const actual = gameState.targetWord.w.toLowerCase();
     
-    if (guess === actual) {
+    // We also check if they typed it without spaces (just in case)
+    const actualNoSpaces = actual.replace(/\s+/g, '');
+
+    if (guess === actual || guess === actualNoSpaces) {
         endGame("Imposters Steal the Win!", `The Imposter correctly guessed the word!`, 'fa-mask', 'var(--danger)');
     } else {
         endGame("Innocents Win!", `The Imposter guessed "${guess}", which was wrong!`, 'fa-check-circle', 'var(--success)');
@@ -355,4 +432,5 @@ function endGame(title, desc, iconClass, color) {
     
     document.getElementById('nav-restart').classList.add('hidden'); // Hide top bar restart on final screen
     showScreen('screen-result');
+
 }
