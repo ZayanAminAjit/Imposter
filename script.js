@@ -279,33 +279,32 @@ function prepPassScreen() {
     showScreen('screen-pass');
 }
 
-let hasSeenWord = false; // Track if they clicked unhide
+let hasSeenWord = false; // Track if current player revealed the word
 
 function showRole() {
     let p = gameState.roles[gameState.currentPlayerIdx];
-    hasSeenWord = false; // Reset for new player
-    
-    // Set text data
+    hasSeenWord = false; 
+
+    // 1. Prepare Text (Handle Spaces and Case)
     const roleElem = document.getElementById('reveal-role');
     roleElem.innerText = p.role === 'Whiteman' ? 'Mr. Whiteman' : p.role;
     roleElem.style.color = (p.role === 'Innocent') ? "var(--success)" : "var(--danger)";
     
-    // Handle the word display with the "Space" fix and Case fix
-    let displayWord = p.role === 'Innocent' || p.role === 'Jester' ? p.word : `Hint: ${p.hint}`;
-    // Add spaces between CamelCase words
-    document.getElementById('reveal-word').innerText = displayWord.replace(/([A-Z])/g, ' $1').trim();
+    // Formatting: Ensure multi-word entries like "Ice Cream" look right
+    let displayWord = (p.role === 'Innocent' || p.role === 'Jester') ? p.word : `Hint: ${p.hint}`;
+    document.getElementById('reveal-word').innerText = displayWord;
     
     document.getElementById('reveal-desc').innerText = p.role === 'Jester' ? 
         "Try to act suspicious and get voted out!" : 
         (p.role === 'Innocent' ? "Find the imposter among you." : "Blend in and don't get caught!");
 
-    // Ensure UI is in "Hidden" state initially
+    // 2. Reset UI State to "Locked"
     document.getElementById('reveal-content').classList.add('hidden-blur');
     document.getElementById('reveal-content').classList.remove('visible-clear');
     document.getElementById('reveal-placeholder').style.display = 'block';
     
     document.getElementById('btn-toggle-reveal').innerHTML = '<i class="fa-solid fa-eye"></i> Show Word';
-    document.getElementById('btn-next-player').classList.add('hidden');
+    document.getElementById('btn-next-player').classList.add('hidden'); // Hide "Next" until they look
 
     showScreen('screen-reveal');
 }
@@ -317,23 +316,22 @@ function toggleWordVisibility() {
     const nextBtn = document.getElementById('btn-next-player');
 
     if (content.classList.contains('hidden-blur')) {
-        // UNHIDE
+        // ACTION: SHOW
         content.classList.remove('hidden-blur');
         content.classList.add('visible-clear');
         placeholder.style.display = 'none';
         toggleBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Hide Word';
-        
-        // Mark as seen and show the "Next" button
         hasSeenWord = true;
-        nextBtn.classList.remove('hidden');
+        nextBtn.classList.remove('hidden'); // Now they can proceed
     } else {
-        // HIDE
+        // ACTION: HIDE
         content.classList.add('hidden-blur');
         content.classList.remove('visible-clear');
         placeholder.style.display = 'block';
         toggleBtn.innerHTML = '<i class="fa-solid fa-eye"></i> Show Word';
     }
 }
+
 
 function hideRole() {
     gameState.currentPlayerIdx++;
@@ -402,18 +400,18 @@ function handleVote(votedName) {
 }
 
 function submitGuess() {
-    // .trim() removes accidental spaces at start/end
-    // .toLowerCase() makes it case-insensitive
-    const guess = document.getElementById('imposter-guess-input').value.trim().toLowerCase();
-    const actual = gameState.targetWord.w.toLowerCase();
+    // Case-Insensitive & Space-Friendly Guessing
+    const rawGuess = document.getElementById('imposter-guess-input').value.trim().toLowerCase();
+    const rawActual = gameState.targetWord.w.toLowerCase();
     
-    // We also check if they typed it without spaces (just in case)
-    const actualNoSpaces = actual.replace(/\s+/g, '');
+    // Remove symbols/spaces for a "Deep Match" (Dota 2 vs Dota2)
+    const cleanGuess = rawGuess.replace(/[^a-z0-9]/g, '');
+    const cleanActual = rawActual.replace(/[^a-z0-9]/g, '');
 
-    if (guess === actual || guess === actualNoSpaces) {
-        endGame("Imposters Steal the Win!", `The Imposter correctly guessed the word!`, 'fa-mask', 'var(--danger)');
+    if (cleanGuess === cleanActual) {
+        endGame("Imposters Steal the Win!", `The Imposter correctly guessed "${gameState.targetWord.w}"!`, 'fa-mask', 'var(--danger)');
     } else {
-        endGame("Innocents Win!", `The Imposter guessed "${guess}", which was wrong!`, 'fa-check-circle', 'var(--success)');
+        endGame("Innocents Win!", `The Imposter guessed "${rawGuess}", but the word was "${gameState.targetWord.w}".`, 'fa-check-circle', 'var(--success)');
     }
 }
 
@@ -434,4 +432,5 @@ function endGame(title, desc, iconClass, color) {
     showScreen('screen-result');
 
 }
+
 
