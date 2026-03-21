@@ -12,111 +12,126 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 <body>
-
-    <nav class="top-nav">
-        <button id="nav-back" class="icon-btn hidden" onclick="goBack()" title="Go Back">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
-        <div class="nav-title">Imposter</div>
-        <div class="nav-actions">
-            <button id="nav-restart" class="icon-btn hidden" onclick="restartToSettings()" title="Restart Game">
-                <i class="fa-solid fa-rotate-left"></i>
-            </button>
-            <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">
-                <i id="theme-icon" class="fa-solid fa-sun"></i>
-            </button>
-        </div>
-    </nav>
-
-    <div id="custom-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h3 id="modal-title">Alert</h3>
-            <p id="modal-text">Message goes here.</p>
-            <div class="modal-actions" id="modal-actions">
-                </div>
-        </div>
-    </div>
-
     <div id="app">
-        <div id="screen-names" class="screen active">
-            <i class="fa-solid fa-users fa-3x screen-icon"></i>
-            <h1>Who's Playing?</h1>
-            <p class="subtitle">Enter player names (Min 3)</p>
-            <div class="input-group">
-                <input type="text" id="new-player-name" placeholder="Enter name...">
-                <button class="btn-primary" onclick="addPlayer()">
-                    <i class="fa-solid fa-plus"></i> Add
-                </button>
+        <!-- New Single Setup Screen -->
+        <div id="screen-setup" class="screen active">
+            <div class="setup-section">
+                <h2><i class="fa-solid fa-users"></i> Players</h2>
+                <p class="subtitle">Add 3 to 12 players to the game.</p>
+                <div class="input-group">
+                    <input type="text" id="new-player-name" placeholder="Enter player name...">
+                    <button class="btn-primary" onclick="addPlayer()">
+                        <i class="fa-solid fa-plus"></i> Add
+                    </button>
+                </div>
+                <div class="player-list" id="player-list-ui"></div>
             </div>
-            <div class="player-list" id="player-list-ui"></div>
-            <button class="btn-primary full-width" onclick="goToSettings()" id="btn-to-settings" disabled>
-                Next: Settings <i class="fa-solid fa-arrow-right"></i>
-            </button>
-        </div>
 
-        <div id="screen-settings" class="screen">
-            <i class="fa-solid fa-gear fa-3x screen-icon"></i>
-            <h2>Game Settings</h2>
-            
-            <div class="settings-group">
-                <h3><i class="fa-solid fa-layer-group"></i> Categories</h3>
-                <div class="checkbox-grid">
-                    <label class="checkbox-label"><input type="checkbox" class="category-cb" value="Regular" checked> <span>Regular</span></label>
-                    <label class="checkbox-label"><input type="checkbox" class="category-cb" value="Food" checked> <span>Food</span></label>
-                    <label class="checkbox-label"><input type="checkbox" class="category-cb" value="Celebrities"> <span>Celebrities</span></label>
-                    <label class="checkbox-label"><input type="checkbox" class="category-cb" value="VideoGames"> <span>Video Games</span></label>
-                    <label class="checkbox-label"><input type="checkbox" class="category-cb" value="Movies"> <span>Movies</span></label>
+            <div class="setup-section">
+                <h2><i class="fa-solid fa-layer-group"></i> Categories</h2>
+                <p class="subtitle">Choose one or more word categories.</p>
+                <div class="button-grid" id="categories-grid">
+                    <!-- Categories will be dynamically inserted here -->
                 </div>
             </div>
 
-            <div class="settings-group">
-                <h3><i class="fa-solid fa-scale-balanced"></i> Roles & Rules</h3>
-                <label class="input-label">Imposters: 
-                    <input type="number" id="set-imposters" value="1" min="1">
-                </label>
-                <label class="checkbox-label"><input type="checkbox" id="set-whiteman"> <span>Mr. Whiteman (No Hint)</span></label>
-                <label class="checkbox-label"><input type="checkbox" id="set-jester"> <span>Jester (Wins if voted out)</span></label>
-                <label class="checkbox-label"><input type="checkbox" id="set-twists"> <span>Random Plot Twists</span></label>
-                <label class="input-label" style="margin-top: 15px;">Round Timer (Sec): 
-                    <input type="number" id="set-timer" value="120" min="10">
-                </label>
+            <div class="setup-section">
+                <h2><i class="fa-solid fa-cogs"></i> Rules</h2>
+                <div class="settings-item">
+                    <div class="setting-main">
+                        <div class="setting-label">
+                            <i class="fa-solid fa-user-secret"></i>
+                            <span>Imposters</span>
+                        </div>
+                        <div class="setting-control">
+                            <span id="imposter-count">1</span>
+                        </div>
+                    </div>
+                    <p class="rule-description">The number of imposters is automatically set based on player count.</p>
+                </div>
+                <div class="settings-item">
+                    <div class="setting-main">
+                        <div class="setting-label">
+                            <i class="fa-solid fa-clock"></i>
+                            <span>Time Limit</span>
+                        </div>
+                        <div class="setting-control">
+                            <button id="time-limit-toggle" class="switch-btn" data-value="off"></button>
+                            <input type="number" id="time-limit-value" class="hidden" value="3" min="1">
+                            <span id="time-limit-unit" class="hidden">min</span>
+                        </div>
+                    </div>
+                    <p class="rule-description">Enable a timer for the discussion phase.</p>
+                </div>
+                <div class="settings-item">
+                    <div class="setting-main">
+                        <div class="setting-label">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            <span>Imposter Hint</span>
+                        </div>
+                        <div class="setting-control">
+                            <button id="imposter-hint-toggle" class="switch-btn" data-value="on"></button>
+                        </div>
+                    </div>
+                    <p class="rule-description">If enabled, imposters will receive a hint about the secret word.</p>
+                </div>
+                <div class="settings-item">
+                    <div class="setting-main">
+                        <div class="setting-label">
+                            <i class="fa-solid fa-dice"></i>
+                            <span>Troll Mode</span>
+                        </div>
+                        <div class="setting-control">
+                            <button id="troll-mode-toggle" class="switch-btn" data-value="off"></button>
+                        </div>
+                    </div>
+                    <p class="rule-description">A small chance for a round where everyone is an imposter or no one is.</p>
+                </div>
             </div>
 
-            <button class="btn-primary full-width large-btn" onclick="startGame()">
+            <div class="setup-section">
+                <h2><i class="fa-solid fa-palette"></i> Appearance</h2>
+                <div class="settings-item">
+                     <div class="setting-main">
+                        <div class="setting-label">
+                            <i class="fa-solid fa-circle-half-stroke"></i>
+                            <span>Theme</span>
+                        </div>
+                        <div class="setting-control">
+                            <button id="theme-toggle" class="switch-btn" data-value="dark"></button>
+                        </div>
+                    </div>
+                    <p class="rule-description">Switch between light and dark mode.</p>
+                </div>
+            </div>
+            
+            <button class="btn-primary full-width large-btn" onclick="startGame()" id="btn-start-game" disabled>
                 <i class="fa-solid fa-play"></i> Start Game
             </button>
         </div>
 
-        <div id="screen-pass" class="screen">
-            <i class="fa-solid fa-mobile-screen-button fa-4x screen-icon pulse"></i>
-            <h2>Pass device to</h2>
-            <h1 id="pass-player-name" class="highlight-text"></h1>
-            <button class="btn-primary full-width large-btn" onclick="showRole()">
-                I am <span id="btn-im-player"></span> <i class="fa-solid fa-eye"></i>
-            </button>
-        </div>
-
+        <!-- New Reveal Screen -->
         <div id="screen-reveal" class="screen">
-            <i class="fa-solid fa-user-secret fa-3x screen-icon"></i>
-            <h2>Secret Role</h2>
-            
-            <div class="role-card">
-                <div id="reveal-content" class="hidden-blur">
-                    <div class="role-title" id="reveal-role"></div>
-                    <div class="role-word" id="reveal-word"></div>
-                    <p id="reveal-desc" class="role-desc"></p>
+            <button class="back-btn" onclick="restartGame()"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="reveal-container">
+                <p class="reveal-header">Pass to <span id="reveal-player-name"></span></p>
+                <div id="reveal-card" class="reveal-card">
+                    <div class="card-face card-front">
+                        <div class="card-front-content">
+                            <i class="fa-solid fa-fingerprint"></i>
+                            <p>Long press to reveal</p>
+                            <div class="long-press-bar">
+                                <div id="long-press-progress" class="long-press-progress"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-face card-back">
+                        <h2 id="reveal-role"></h2>
+                        <h1 id="reveal-word"></h1>
+                        <p id="reveal-desc"></p>
+                    </div>
                 </div>
-                <div id="reveal-placeholder">
-                    <i class="fa-solid fa-lock fa-3x" style="opacity: 0.3; margin-bottom: 15px;"></i>
-                    <p>Tap "Show Word" to reveal your secret info</p>
-                </div>
-            </div>
-        
-            <div class="grid-btns">
-                <button id="btn-toggle-reveal" class="btn-outline full-width" onclick="toggleWordVisibility()">
-                    <i class="fa-solid fa-eye"></i> Show Word
-                </button>
-                <button id="btn-next-player" class="btn-primary full-width hidden" onclick="hideRole()">
+                <button id="btn-next-player" class="btn-primary full-width hidden" onclick="nextPlayer()">
                     Next Player <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
@@ -127,7 +142,7 @@
             <h2>Discuss!</h2>
             <div id="timer-display">2:00</div>
             <p class="subtitle">Give your clues. Don't be too obvious!</p>
-            <button class="btn-danger full-width large-btn" onclick="goToVote()">
+            <button class="btn-primary full-width large-btn" onclick="goToVote()">
                 <i class="fa-solid fa-gavel"></i> Proceed to Voting
             </button>
         </div>
@@ -139,18 +154,6 @@
             <div class="grid-btns" id="vote-grid"></div>
         </div>
 
-        <div id="screen-guess" class="screen">
-            <i class="fa-solid fa-magnifying-glass fa-3x screen-icon text-danger"></i>
-            <h2 class="text-danger">Imposter Caught!</h2>
-            <p id="guess-msg" class="subtitle"></p>
-            <div class="input-group" style="flex-direction: column;">
-                <input type="text" id="imposter-guess-input" placeholder="Guess the exact word...">
-                <button class="btn-primary full-width" onclick="submitGuess()">
-                    <i class="fa-solid fa-paper-plane"></i> Submit Guess
-                </button>
-            </div>
-        </div>
-
         <div id="screen-result" class="screen">
             <i id="result-icon" class="fa-solid fa-trophy fa-4x screen-icon"></i>
             <h1 id="result-title"></h1>
@@ -159,15 +162,20 @@
                 <h3>The Word Was:</h3>
                 <h2 id="result-word" class="highlight-text"></h2>
             </div>
-            <button class="btn-primary full-width" onclick="restartToSettings()" style="margin-top: 20px;">
-                <i class="fa-solid fa-rotate-left"></i> Play Again (Same Players)
-            </button>
-            <button class="btn-outline full-width" onclick="location.reload()" style="margin-top: 10px;">
-                <i class="fa-solid fa-power-off"></i> New Game Entirely
+            <button class="btn-primary full-width" onclick="restartGame()" style="margin-top: 20px;">
+                <i class="fa-solid fa-rotate-left"></i> Play Again
             </button>
         </div>
     </div>
-
+    
+    <div id="custom-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="modal-title">Alert</h3>
+            <p id="modal-text">Message goes here.</p>
+            <div class="modal-actions" id="modal-actions">
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 
