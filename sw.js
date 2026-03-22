@@ -1,9 +1,10 @@
-const CACHE_NAME = 'imposter-v6';
+const CACHE_NAME = 'imposter-v7';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
   './script.js',
+  './wordBank.js',
   './manifest.json',
   './icon.png',
   './apple-touch-icon.png',
@@ -46,7 +47,12 @@ self.addEventListener('fetch', (event) => {
                 return response;
             }
             // Not in cache - go to network
-            return fetch(event.request);
+            return fetch(event.request).catch(() => {
+                // If both cache and network fail, return offline page for navigation requests
+                if (event.request.mode === 'navigate') {
+                    return caches.match('./index.html');
+                }
+            });
         })
     );
 });
