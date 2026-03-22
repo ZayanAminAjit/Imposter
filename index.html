@@ -13,7 +13,7 @@
 </head>
 <body>
     <div id="app">
-        <!-- New Single Setup Screen -->
+        <!-- Single Setup Screen -->
         <div id="screen-setup" class="screen active">
             <div class="setup-section">
                 <h2><i class="fa-solid fa-users"></i> Players</h2>
@@ -44,7 +44,9 @@
                             <span>Imposters</span>
                         </div>
                         <div class="setting-control">
+                            <button id="imposter-minus" class="imposter-btn hidden" disabled>−</button>
                             <span id="imposter-count">1</span>
+                            <button id="imposter-plus" class="imposter-btn hidden" disabled>+</button>
                         </div>
                     </div>
                     <p class="rule-description">The number of imposters is automatically set based on player count.</p>
@@ -56,9 +58,9 @@
                             <span>Time Limit</span>
                         </div>
                         <div class="setting-control">
-                            <button id="time-limit-toggle" class="switch-btn" data-value="off"></button>
-                            <input type="number" id="time-limit-value" class="hidden" value="3" min="1">
+                            <input type="number" id="time-limit-value" class="hidden time-input" value="3" min="1">
                             <span id="time-limit-unit" class="hidden">min</span>
+                            <button id="time-limit-toggle" class="switch-btn" data-value="off"></button>
                         </div>
                     </div>
                     <p class="rule-description">Enable a timer for the discussion phase.</p>
@@ -98,7 +100,7 @@
                             <span>Theme</span>
                         </div>
                         <div class="setting-control">
-                            <button id="theme-toggle" class="switch-btn" data-value="dark"></button>
+                            <button id="theme-toggle" class="theme-preview-btn" data-theme="light"></button>
                         </div>
                     </div>
                     <p class="rule-description">Switch between light and dark mode.</p>
@@ -114,10 +116,13 @@
         <div id="screen-reveal" class="screen">
             <button class="back-btn" onclick="restartGame()"><i class="fa-solid fa-arrow-left"></i></button>
             <div class="reveal-container">
-                <p class="reveal-header">Pass to <span id="reveal-player-name"></span></p>
                 <div id="reveal-card" class="reveal-card">
                     <div class="card-face card-front">
                         <div class="card-front-content">
+                            <div class="reveal-header">
+                                <div class="pass-to-text">Pass to</div>
+                                <div class="player-name-text" id="reveal-player-name"></div>
+                            </div>
                             <i class="fa-solid fa-fingerprint"></i>
                             <p>Long press to reveal</p>
                             <div class="long-press-bar">
@@ -162,6 +167,9 @@
                 <h3>The Word Was:</h3>
                 <h2 id="result-word" class="highlight-text"></h2>
             </div>
+            <button class="btn-primary full-width" onclick="restartGame()" style="margin-top: 20px;">
+                Play Again <i class="fa-solid fa-rotate-left"></i> 
+            </button>
         </div>
     </div>
     
@@ -173,6 +181,7 @@
             </div>
         </div>
     </div>
+    <script src="wordBank.js"></script>
     <script src="script.js"></script>
 </body>
 

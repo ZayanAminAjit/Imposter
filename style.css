@@ -114,6 +114,40 @@ input[type="text"]:focus, input[type="number"]:focus { border-color: var(--accen
 .setting-control { display: flex; align-items: center; gap: 8px; }
 #imposter-count { font-weight: bold; }
 
+.imposter-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 1px solid var(--border);
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.imposter-btn:hover:not(:disabled) {
+    background-color: var(--accent);
+    color: var(--bg-color);
+    border-color: var(--accent);
+}
+
+.imposter-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.time-input {
+    width: 50px;
+    text-align: center;
+    padding: 6px;
+}
+
 .switch-btn {
     width: 60px;
     height: 30px;
@@ -147,13 +181,50 @@ input[type="text"]:focus, input[type="number"]:focus { border-color: var(--accen
 #time-limit-value { width: 60px; text-align: center; padding: 6px; }
 #time-limit-unit { font-size: 0.9rem; color: var(--text-muted); }
 
+.theme-preview-btn {
+    width: 80px;
+    height: 30px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    padding: 0;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.theme-preview-btn[data-theme="light"] {
+    background-color: #f0f2f5;
+    color: #1c1e21;
+    border-color: #e4e6eb;
+}
+
+.theme-preview-btn[data-theme="dark"] {
+    background-color: #242526;
+    color: #e4e6eb;
+    border-color: #3a3b3c;
+}
+
+.theme-preview-btn:hover {
+    transform: scale(1.05);
+}
+
 /* --- Reveal Screen --- */
 #screen-reveal {
     position: relative;
 }
 
-.reveal-container { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; gap: 20px; }
-.reveal-header { color: var(--text-muted); font-size: 1.2rem; }
+.reveal-container { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; gap: 30px; }
+.reveal-header { text-align: center; margin-bottom: 15px; }
+.pass-to-text { color: var(--text-muted); font-size: 1.2rem; font-weight: 400; margin-bottom: 5px; }
+.player-name-text { color: var(--accent); font-size: 1.6rem; font-weight: 600; }
 #reveal-player-name { font-weight: bold; color: var(--accent); }
 
 .reveal-card {
@@ -209,8 +280,17 @@ input[type="text"]:focus, input[type="number"]:focus { border-color: var(--accen
     align-items: center;
     text-align: center;
 }
+/* Timer & Vote Screens */
+#screen-timer {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 #timer-display { font-size: 4.5rem; font-weight: 800; color: var(--accent); margin: 20px 0; font-variant-numeric: tabular-nums; }
-.grid-btns { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; width: 100%; }
+.grid-btns { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; width: 100%; justify-items: center; }
+
+/* Vote Screen Centering */
+#screen-vote { justify-content: center; text-align: center; }
 
 /* Result Screen Alignment Fix */
 #screen-result { justify-content: center; text-align: center; }

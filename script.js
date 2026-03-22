@@ -1,30 +1,7 @@
-// --- Service Worker and Data ---
+// --- Service Worker and Data ----
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(err => console.log('Service Worker registration failed:', err));
 }
-
-const wordBank = {
-    "Regular": [
-        {w: "Library", h: "Silence"}, {w: "Subway", h: "Underground"}, {w: "Umbrella", h: "Rain"},
-        {w: "Backpack", h: "Straps"}, {w: "Mirror", h: "Reflection"}, {w: "Keyboard", h: "Input"}
-    ],
-    "Food": [
-        {w: "Pizza", h: "Dough"}, {w: "Sushi", h: "Vinegar"}, {w: "Taco", h: "Shell"},
-        {w: "Burger", h: "Grill"}, {w: "Pasta", h: "Boil"}, {w: "Steak", h: "Medium"}
-    ],
-    "Celebrities": [
-        {w: "Taylor Swift", h: "Eras"}, {w: "Tom Cruise", h: "Stunts"}, {w: "The Rock", h: "Muscle"},
-        {w: "Beyonce", h: "Queen"}, {w: "Elon Musk", h: "Mars"}, {w: "Lionel Messi", h: "Pitch"}
-    ],
-    "VideoGames": [
-        {w: "Minecraft", h: "Blocks"}, {w: "Fortnite", h: "Building"}, {w: "Among Us", h: "Sus"},
-        {w: "Valorant", h: "Abilities"}, {w: "Zelda", h: "Triforce"}, {w: "Mario Kart", h: "Shells"}
-    ],
-    "Movies": [
-        {w: "Inception", h: "Dreams"}, {w: "Titanic", h: "Iceberg"}, {w: "Star Wars", h: "Galaxy"},
-        {w: "Harry Potter", h: "Wand"}, {w: "The Avengers", h: "Heroes"}, {w: "Joker", h: "Laugh"}
-    ]
-};
 
 // --- State Management ---
 let players = [];
@@ -39,14 +16,15 @@ let settings = {
     imposterCount: 1,
     timeLimit: 0, // in minutes
     imposterHint: true,
-    trollMode: false
+    trollMode: false,
+    customImposterCount: null // User override for imposter count
 };
 
 // --- Initialization ---
 document.addEventListener("DOMContentLoaded", () => {
     const savedTheme = localStorage.getItem("theme") || "dark";
     document.documentElement.setAttribute("data-theme", savedTheme);
-    document.getElementById('theme-toggle').dataset.value = savedTheme;
+    updateThemeButton();
 
     renderCategories();
     renderPlayers();
@@ -61,6 +39,14 @@ function setupEventListeners() {
     document.getElementById('imposter-hint-toggle').addEventListener('click', toggleSetting);
     document.getElementById('troll-mode-toggle').addEventListener('click', toggleSetting);
     document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+    // Setup imposter count controls
+    const imposterCountMinus = document.getElementById('imposter-minus');
+    const imposterCountPlus = document.getElementById('imposter-plus');
+    if (imposterCountMinus) {
+        imposterCountMinus.addEventListener('click', () => changeImposterCount(-1));
+        imposterCountPlus.addEventListener('click', () => changeImposterCount(1));
+    }
 
     // Reveal card interaction
     const revealCard = document.getElementById('reveal-card');
@@ -93,13 +79,20 @@ function setupEventListeners() {
 
 // --- Theme Management ---
 function toggleTheme() {
-    const toggleBtn = document.getElementById('theme-toggle');
     const currentTheme = document.documentElement.getAttribute("data-theme");
     const newTheme = currentTheme === "dark" ? "light" : "dark";
 
     document.documentElement.setAttribute("data-theme", newTheme);
     localStorage.setItem("theme", newTheme);
-    toggleBtn.dataset.value = newTheme;
+    updateThemeButton();
+}
+
+function updateThemeButton() {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    const themeBtn = document.getElementById('theme-toggle');
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+    themeBtn.dataset.theme = nextTheme;
+    themeBtn.textContent = nextTheme === "light" ? "Light Mode" : "Dark Mode";
 }
 
 // --- UI Navigation ---
@@ -180,10 +173,71 @@ function toggleCategory(category, btn) {
 
 function updateImposterCount() {
     const playerCount = players.length;
-    if (playerCount <= 4) settings.imposterCount = 1;
-    else if (playerCount <= 8) settings.imposterCount = 2;
-    else settings.imposterCount = 3;
+    let defaultCount = 1;
+    let minCount = 1;
+    let maxCount = 1;
+
+    if (playerCount <= 5) {
+        defaultCount = 1;
+        minCount = 1;
+        maxCount = 1;
+    } else if (playerCount <= 8) {
+        defaultCount = 2;
+        minCount = 1;
+        maxCount = 2;
+    } else if (playerCount <= 12) {
+        defaultCount = 3;
+        minCount = 1;
+        maxCount = 3;
+    }
+
+    // Use custom count if set, otherwise use default
+    if (settings.customImposterCount === null) {
+        settings.imposterCount = defaultCount;
+    } else {
+        // Validate custom count is within range
+        settings.imposterCount = Math.max(minCount, Math.min(maxCount, settings.customImposterCount));
+    }
+
     document.getElementById('imposter-count').textContent = settings.imposterCount;
+
+    // Show/hide imposter controls and set their limits
+    const minusBtn = document.getElementById('imposter-minus');
+    const plusBtn = document.getElementById('imposter-plus');
+    
+    if (playerCount >= 6) {
+        minusBtn.classList.remove('hidden');
+        plusBtn.classList.remove('hidden');
+        // Disable buttons if at limits
+        minusBtn.disabled = settings.imposterCount <= minCount;
+        plusBtn.disabled = settings.imposterCount >= maxCount;
+    } else {
+        minusBtn.classList.add('hidden');
+        plusBtn.classList.add('hidden');
+    }
+}
+
+function changeImposterCount(delta) {
+    const playerCount = players.length;
+    let minCount = 1, maxCount = 1;
+    
+    if (playerCount <= 5) {
+        maxCount = 1;
+    } else if (playerCount <= 8) {
+        maxCount = 2;
+    } else if (playerCount <= 12) {
+        maxCount = 3;
+    }
+
+    settings.customImposterCount = settings.imposterCount + delta;
+    settings.customImposterCount = Math.max(1, Math.min(maxCount, settings.customImposterCount));
+    settings.imposterCount = settings.customImposterCount;
+    
+    document.getElementById('imposter-count').textContent = settings.imposterCount;
+    
+    // Update button states
+    document.getElementById('imposter-minus').disabled = settings.imposterCount <= 1;
+    document.getElementById('imposter-plus').disabled = settings.imposterCount >= maxCount;
 }
 
 function toggleSetting(event) {
@@ -260,7 +314,11 @@ function prepareRevealScreen() {
     document.getElementById('reveal-word').textContent = player.word;
     document.getElementById('reveal-desc').textContent = player.desc;
 
-    document.getElementById('reveal-card').classList.remove('flipped');
+    const revealCard = document.getElementById('reveal-card');
+    revealCard.classList.remove('flipped');
+    revealCard.style.opacity = '1';
+    revealCard.style.transition = 'opacity 0.3s ease-out';
+
     document.getElementById('btn-next-player').classList.add('hidden');
     document.getElementById('long-press-progress').style.width = '0%';
 }
@@ -268,7 +326,15 @@ function prepareRevealScreen() {
 function nextPlayer() {
     gameState.currentPlayerIdx++;
     if (gameState.currentPlayerIdx < players.length) {
-        prepareRevealScreen();
+        // Add sleek transition effect
+        const revealCard = document.getElementById('reveal-card');
+        revealCard.style.transition = 'opacity 0.3s ease-out';
+        revealCard.style.opacity = '0';
+
+        setTimeout(() => {
+            prepareRevealScreen();
+            revealCard.style.opacity = '1';
+        }, 300);
     } else {
         if (settings.timeLimit > 0) {
             startDiscussionTimer();
